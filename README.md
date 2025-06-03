@@ -26,8 +26,8 @@ This repository contains a shell script which connects to a multiple docker host
    ```
    
 3. **Add hosts file container docker hosts**
-    The file should be called `hosts`. 
-    See `hosts.sample`for an example. 
+The file should be called `hosts`. 
+See `hosts.sample`for an example. 
 
 3. **Run the Script**
    ```bash
