@@ -35,15 +35,15 @@ See `hosts.sample`for an example.
    ```
 4. **Help text**
 ./dockercheck.sh --help to display help text
-```bash
-Usage: dockercheck [OPTION]
-Performs SSH to host and checks for dangling docker images.
+   ```bash
+   Usage: dockercheck [OPTION]
+   Performs SSH to host and checks for dangling docker images.
 
-Optional arguments:
-prune,             removed all dangling images on hosts
--h, --help         displays this message
+   Optional arguments:
+   prune,             removed all dangling images on hosts
+   -h, --help         displays this message
 
-```
+   ```
 
 
 ## License
