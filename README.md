@@ -1,8 +1,8 @@
 # Dockercheck 
-This repository contains a shell script which connects to a multiple docker hosts via SSH and lists out all dangling (orpgan) container images. The script can also remove the unused images.
+This repository contains a shell script which connects to a multiple docker hosts via SSH and lists out all dangling (orphgan) container images. The script can also remove the unused images.
 
 ## Features
-- SSH to multiple docker hosts
+- Connects to remote docker hosts via SSH
 - Executes `docker image ls` on each
 - Displays results 
 - Allows the user to delete orhan images (`prune`)
@@ -10,7 +10,7 @@ This repository contains a shell script which connects to a multiple docker host
 
 ## Prerequisites
 
-- User with SSH access to remote docker hosts
+- SSH access to remote docker hosts
 - User must have permissions to execute docker commands on the docker host. 
 
 ## Usage
