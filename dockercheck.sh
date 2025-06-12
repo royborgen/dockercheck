@@ -39,6 +39,8 @@ if [ $# -ne 0 ]; then
 	
 	#if argument "prune" is provided, we remove all unused docker images on each host
 	if [ "$1" = "prune" ]; then
+		echo "Removing dangling docker images..."
+		echo ""
 		for host in $hosts; do
 			echo "${CYAN}$host:${NOCOLOR}"
 			# execute the command to capture output
