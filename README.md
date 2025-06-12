@@ -31,7 +31,18 @@ See `hosts.sample`for an example.
 
 3. **Run the Script**
    ```bash
-   ./dockercheck.sh
+user@hostname:~$ dockercheck
+Checking for dangling docker images...
+
+host1.docker.example.com:
+jc21/nginx-proxy-manager          <none>    9f5e0949eb63   3 months ago    1.09GB
+containrrr/watchtower		      <none>    e7dd50d07b86   3 months ago    14.7MB
+
+host2.docker.example.com:
+pihole/pihole                     <none>    81365952d1f8   5 days ago      92.7MB
+
+host2.docker.example.com:
+No dangling image found
    ```
 4. **Help text**
 ./dockercheck.sh --help to display help text
