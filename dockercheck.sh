@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #name of the hosts-file
 host_file="hosts"
@@ -42,7 +42,7 @@ if [ $# -ne 0 ]; then
 		echo "Removing dangling docker images..."
 		echo ""
 		for host in $hosts; do
-			echo "${CYAN}$host:${NOCOLOR}"
+			echo -e "${CYAN}$host:${NOCOLOR}"
 			# execute the command to capture output
 			#output="prune"
 			output=$(ssh "$host" 'docker image prune -f')
@@ -70,7 +70,7 @@ if [ "$1" != "prune" ]; then
 	echo""
 	# loop through each host
 	for host in $hosts; do
-		echo "${CYAN}$host:${NOCOLOR}"
+		echo -e "${CYAN}$host:${NOCOLOR}"
 		# execute the command to capture output
 		output=$(ssh "$host" 'docker image ls | grep none')
 
