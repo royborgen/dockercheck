@@ -72,7 +72,7 @@ if [ "$1" != "prune" ]; then
 	for host in $hosts; do
 		echo -e "${CYAN}$host:${NOCOLOR}"
 		# execute the command to capture output
-		output=$(ssh "$host" 'docker images -a --format 'table' | grep none')
+		output=$(ssh "$host" "docker images -a --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}' | grep none")
 
 		#check if output is empty
 		if [ -z "$output" ]; then

@@ -3,7 +3,7 @@ This repository contains a shell script which connects to a multiple docker host
 
 ## Features
 - Connects to remote docker hosts via SSH
-- Executes `docker image ls` on each
+- Executes `docker images -a --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}' | grep none` on each
 - Displays results 
 - Allows the user to delete orhan images (`prune`)
 - When deleting images the script executes `docker image prune -f`
