@@ -1,10 +1,18 @@
 # Dockercheck 
-This repository contains a shell script which connects to a multiple docker hosts via SSH and lists out all dangling (orphgan) container images. The script can also remove the unused images.
+
+
+# Dockercheck
+
+This repository contains a shell script that connects to multiple Docker hosts via SSH and lists all dangling (orphan) container images. The script can also remove unused images.
+
+Additionally, the script now checks if **Watchtower** container is running on the host before attempting to identify unamed images. If Watchtower is not running, the script will display a default output of `none` instead of failing.
+
 
 ## Features
 - Connects to remote docker hosts via SSH
 - Executes `docker images -a --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}' | grep none` on each
-- Displays results 
+- Checks if container is Watchtower is running before parsing logs
+- Displays results
 - Allows the user to delete orhan images (`prune`)
 - When deleting images the script executes `docker image prune -f`
 
