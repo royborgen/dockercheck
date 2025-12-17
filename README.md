@@ -30,8 +30,8 @@ The script will try to identify unnamed images updated by **Watchtower** if the 
    chmod +x dockercheck.sh
    ```
    
-3. **Add hosts file container docker hosts**
-The file should be called `hosts`. 
+3. **Add hosts file containing a list of docker hosts**
+The file needs to be called `hosts`. 
 See `hosts.sample`for an example. 
 
 3. **Run the Script**
