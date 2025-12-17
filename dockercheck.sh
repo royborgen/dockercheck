@@ -80,14 +80,22 @@ if [ "$1" != "prune" ]; then
 		else	
 			container_name=$(echo $output | awk '{print $1}')
 			
-			# if image does not have a name, we fetch it from watchtower logs
+			# if image does not have a name, we will try to fetch it from watchtower logs
 			if [ "$container_name" = "<none>" ]; then
-				container_id=$(echo $output | awk '{print $3}') 
-				container_name=$(ssh "$host" "docker logs watchtower 2>&1 | grep 'Found new' | grep \"$id\" | tail -n1 | sed -E 's/.*Found new ([^:]+):.* image.*/\1/'")
-				output=$(echo "$output" | awk -v name="$container_name" '{ print name "\t\t" $3 "\t" $4 " " $5 " " $6 "\t" $7}')
+				container_id=$(echo $output | awk '{print $3}')
+				
+				# check if watchtower is running and try to fetch image name 
+				container_name=$(ssh "$host" "docker ps -q -f name=watchtower >/dev/null && docker logs watchtower 2>&1 | grep \"$container_id\" | tail -n1 | sed -E 's/.*Found new ([^:]+):.* image.*/\1/'")
 
-				echo "$output"
+				if [ "$container_name" ]; then
+					output=$(echo "$output" | awk -v name="$container_name" '{ print name "\t\t" $3 "\t" $4 " " $5 " " $6 "\t" $7}')
+					echo "$output"
+				else
+					output=$(echo "$output" | awk '{ print $1 "\t\t" $3 "\t" $4 " " $5 " " $6 "\t" $7}')
+					echo "$output"
+				fi
 			else	
+				# default output from docker images -a if we could not fetch image name from watchtower
 				output=$(echo "$output" | awk '{ print $1 "\t\t" $3 "\t" $4 " " $5 " " $6 "\t" $7}')
 				echo "$output"
 			fi
