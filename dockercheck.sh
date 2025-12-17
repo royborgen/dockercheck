@@ -68,9 +68,7 @@ if [ "$1" != "prune" ]; then
         echo -e "${CYAN}$host:${NOCOLOR}"
         output=$(ssh "$host" "docker images -a --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}' | grep none")
 
-        if [ -z "$output" ]; then
-            echo "No dangling image found"
-        else
+        if [ "$output" ]; then
             # Loop through all lines in output
             echo "$output" | while read -r line; do
                 container_name=$(echo "$line" | awk '{print $1}')
@@ -91,6 +89,9 @@ if [ "$1" != "prune" ]; then
                     echo "$output"
                 fi
             done
+	
+        else
+            echo "No dangling image found"
         fi
 
         echo ""
