@@ -50,8 +50,9 @@ See `hosts.sample`for an example.
     No dangling image found
    ```
 4. **Help text**
-./dockercheck.sh --help to display help text
+run Dockercheck with argument `--help` to display help text. 
    ```bash
+   ./dockercheck.sh --help
    Usage: dockercheck [OPTION]
    Performs SSH to host and checks for dangling docker images.
 
