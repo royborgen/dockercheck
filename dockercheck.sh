@@ -77,8 +77,20 @@ if [ "$1" != "prune" ]; then
 		#check if output is empty
 		if [ -z "$output" ]; then
 			echo "No dangling image found"
-		else
-			echo "$output"
+		else	
+			container_name=$(echo $output | awk '{print $1}')
+			
+			# if image does not have a name, we fetch it from watchtower logs
+			if [ "$container_name" = "<none>" ]; then
+				container_id=$(echo $output | awk '{print $3}') 
+				container_name=$(ssh "$host" "docker logs watchtower 2>&1 | grep 'Found new' | grep \"$id\" | tail -n1 | sed -E 's/.*Found new ([^:]+):.* image.*/\1/'")
+				output=$(echo "$output" | awk -v name="$container_name" '{ print name "\t\t" $3 "\t" $4 " " $5 " " $6 "\t" $7}')
+
+				echo "$output"
+			else	
+				output=$(echo "$output" | awk '{ print $1 "\t\t" $3 "\t" $4 " " $5 " " $6 "\t" $7}')
+				echo "$output"
+			fi
 		fi
 
 		echo ""
