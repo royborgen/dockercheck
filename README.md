@@ -1,6 +1,3 @@
-# Dockercheck 
-
-
 # Dockercheck
 
 This repository contains a shell script that connects to multiple Docker hosts via SSH and lists all dangling (orphan) container images. The script can also remove unused images.
