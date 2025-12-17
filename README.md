@@ -8,7 +8,7 @@ The script will try to identify unnamed images updated by **Watchtower** if the 
 ## Features
 - Connects to remote docker hosts via SSH
 - Executes `docker images -a --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}' | grep none` on each
-- Checks if container is Watchtower is running before parsing logs
+- Checks if Watchtower container is running before parsing logs to identify nameless images. 
 - Displays results
 - Allows the user to delete orhan images (`prune`)
 - When deleting images the script executes `docker image prune -f`
