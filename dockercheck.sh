@@ -75,15 +75,16 @@ if [ "$1" != "prune" ]; then
                 
                 if [ "$container_name" = "<none>" ]; then
                     container_id=$(echo "$line" | awk '{print $3}')
-                    container_name=$(ssh "$host" "docker ps -q -f name=watchtower >/dev/null && docker logs watchtower 2>&1 | grep \"$container_id\" | tail -n1 | sed -E 's/.*Found new ([^:]+):.* image.*/\1/'")
+                    container_names=$(ssh "$host" "docker ps -a --filter ancestor=$container_id --format '{{.Names}}'")
+		    
+		    if [ -n "$container_names" ]; then
+		    	while read -r cname; do
+        		    echo -e "${cname}\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
+    		        done <<< "$container_names"
+		    else
+    			echo -e "<no container>\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
+		    fi
 
-                    if [ "$container_name" ]; then
-                        output=$(echo "$line" | awk -v name="$container_name" '{ print name "\t\t" $3 "\t" $4 " " $5 " " $6 "\t" $7}')
-                        echo "$output"
-                    else
-                        output=$(echo "$line" | awk '{ print $1 "\t\t" $3 "\t" $4 " " $5 " " $6 "\t" $7}')
-                        echo "$output"
-                    fi
                 else
                     output=$(echo "$line" | awk '{ print $1 "\t\t" $3 "\t" $4 " " $5 " " $6 "\t" $7}')
                     echo "$output"
