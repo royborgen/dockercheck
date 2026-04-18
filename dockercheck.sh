@@ -76,7 +76,7 @@ if [ "$1" != "prune" ]; then
 		#Try to identify unnamed containers
                 if [ "$container_name" = "<none>" ]; then
                     container_id=$(echo "$line" | awk '{print $3}')
-    		    container_name=$(ssh "$host" "docker inspect --format='{{(index .Identity.Pull 0).Repository}}' $container_id")
+		    container_name=$(ssh "$host" "docker inspect $container_id | grep -oP '\"Repository\": \"[^\"]+\"' | head -n1 | cut -d'\"' -f4")
 		    if [ -n "$container_name" ]; then
         		echo -e "${container_name}\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
 		 
