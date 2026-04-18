@@ -73,16 +73,19 @@ if [ "$1" != "prune" ]; then
             echo "$output" | while read -r line; do
                 container_name=$(echo "$line" | awk '{print $1}')
                 
+		#Try to identify unnamed containers
                 if [ "$container_name" = "<none>" ]; then
                     container_id=$(echo "$line" | awk '{print $3}')
-                    container_names=$(ssh "$host" "docker ps -a --filter ancestor=$container_id --format '{{.Names}}'")
+    		    container_name=$(ssh "$host" "docker inspect --format='{{(index .Identity.Pull 0).Repository}}' $container_id")
+		    if [ -n "$container_name" ]; then
+        		echo -e "${container_name}\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
+		 
+		    elif [ -z "$container_name" ]; then
+                    	container_name=$(ssh "$host" "docker ps -a --filter ancestor=$container_id --format '{{.Names}}'")
+        		echo -e "${container_name}\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
 		    
-		    if [ -n "$container_names" ]; then
-		    	while read -r cname; do
-        		    echo -e "${cname}\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
-    		        done <<< "$container_names"
 		    else
-    			echo -e "<no container>\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
+			echo -e "<no container>\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
 		    fi
 
                 else
