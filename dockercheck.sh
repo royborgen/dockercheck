@@ -77,17 +77,22 @@ if [ "$1" != "prune" ]; then
                 if [ "$container_name" = "<none>" ]; then
                     container_id=$(echo "$line" | awk '{print $3}')
 		    container_name=$(ssh "$host" "docker inspect $container_id | grep -oP '\"Repository\": \"[^\"]+\"' | head -n1 | cut -d'\"' -f4")
+		    
+		    #print if we container_name has a value 
 		    if [ -n "$container_name" ]; then
         		echo -e "${container_name}\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
-		 
+		 	
+		    #if container_name is empty, we try to identify it by checking what cotainer is the ancestor	
 		    elif [ -z "$container_name" ]; then
                     	container_name=$(ssh "$host" "docker ps -a --filter ancestor=$container_id --format '{{.Names}}'")
         		echo -e "${container_name}\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
 		    
+		    #failed to identify the container. Just print the id 
 		    else
 			echo -e "<no container>\t\t${container_id}\t$(echo "$line" | awk '{print $4, $5, $6 "\t" $7}')"
 		    fi
-
+		
+		#Container is named, we just print the output
                 else
                     output=$(echo "$line" | awk '{ print $1 "\t\t" $3 "\t" $4 " " $5 " " $6 "\t" $7}')
                     echo "$output"
