@@ -2,13 +2,13 @@
 
 This repository contains a shell script that connects to multiple Docker hosts via SSH and lists all dangling (orphan) container images. The script can also remove unused images.
 
-The script will try to identify unnamed images updated by **Watchtower** if the container is running. If Watchtower is not running, the script will display a default docker image output of `none`. 
+The script will try to identify unnamed images. The script is particularly useful for checking multiple hosts if you use a tool to autoupdate cotainers. If a container is updated, the old image will be left, usually untagged / unnamed.  
 
 
 ## Features
 - Connects to remote docker hosts via SSH
 - Executes `docker images -a --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}' | grep none` on each
-- Checks if Watchtower container is running before parsing logs to identify nameless images. 
+- Tries to identify unamed container images. 
 - Displays results
 - Allows the user to delete orhan images (`prune`)
 - When deleting images the script executes `docker image prune -f`
