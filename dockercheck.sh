@@ -66,7 +66,8 @@ if [ "$1" != "prune" ]; then
 
     for host in $hosts; do
         echo -e "${CYAN}$host:${NOCOLOR}"
-        output=$(ssh "$host" "docker images -a --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}' | grep none")
+        #output=$(ssh "$host" "docker images -a --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}' | grep none")
+        output=$(ssh "$host" "docker images --filter 'dangling=true' --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}' | grep none")
 
         if [ "$output" ]; then
             # Loop through all lines in output
